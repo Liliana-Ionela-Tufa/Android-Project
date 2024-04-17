@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Licenta2024</string>
+    <string name="enter_password">Enter password</string>
+    <string name="error_while_logging_in">Error while logging in!</string>
+    <string name="submit">Submit</string>
+    <string name="login_now">Login now</string>
+    <string name="enter_email">Enter email</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password_login">Enter password</string>
+    <string name="error_while_logging_in_login">Error while logging in</string>
+    <string name="submit_login">Submit</string>
+    <string name="register_now">Register now</string>
+    <string name="Logout">Logout</string>
+    <string name="hello">Hello, </string>
+    <string name="name">Name</string>
+    <string name="loading">Loading…</string>
+    <string name="upload_data">Upload data</string>
+    <string name="pick_address">Pick address</string>
+    <string name="enter_name_of_tourist_attraction">Enter tourist attraction name</string>
+    <string name="enter_description">Enter description</string>
+    <string name="enter_price_to_visit">Enter price to visit</string>
+    <string name="enter_time_schedule">Enter time schedule</string>
+    <string name="submit2">Submit</string>
+    <string name="enter_type">Enter type</string>
+    <string name="enter_city">Enter city name</string>
+    <string name="enter_country">Enter country name</string>
+    <string name="city">City</string>
+    <string name="nameR">nameR</string>
+    <string name="countryR">countryR</string>
+    <string name="descriptionR">descriptionR</string>
+    <string name="typeR">typeR</string>
+    <string name="delete">Delete</string>
+    <string name="Edit">Edit</string>
+</resources>
