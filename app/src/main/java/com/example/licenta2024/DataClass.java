@@ -13,6 +13,29 @@ public class DataClass {
 
     private  String uuid;
 
+    private  String user;
+
+    public DataClass(String dataName, String dataDescription, String dataType, String dataCity, String dataCountry, String latitude, String longitude, String imageURL, String uuid, String user) {
+        this.dataName = dataName;
+        this.dataDescription = dataDescription;
+        this.dataType = dataType;
+        this.dataCity = dataCity;
+        this.dataCountry = dataCountry;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.imageURL = imageURL;
+        this.uuid = uuid;
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     public DataClass(){
 
     }

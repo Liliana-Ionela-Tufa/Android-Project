@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
     String userID;
     DocumentReference documentReference;
     TextView nameUser;
-    Button logout;
+    Button logout, seeFaves;
 
+    ImageButton favorite;
     RecyclerView recyclerView;
     ArrayList <DataClass> dataList;
     MyAdapter myAdapter;
@@ -85,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        seeFaves = findViewById(R.id.seeFaves);
+        seeFaves.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
+                startActivity(intent);
+            }
+        });
+
 
         Event();
 

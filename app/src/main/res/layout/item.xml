@@ -67,6 +67,17 @@
             android:textSize="15sp"
             android:visibility="visible" />
 
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/outline_favorite_border_24"
+            android:background="@android:color/transparent"
+            android:id="@+id/favoriteButton"
+            android:layout_below="@id/cityR"
+            android:layout_toEndOf="@id/typeR"
+            android:layout_marginStart="66dp"
+            android:contentDescription="TODO" />
+
 
     </RelativeLayout>
 

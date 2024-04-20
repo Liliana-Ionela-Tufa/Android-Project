@@ -1,20 +1,37 @@
 package com.example.licenta2024;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
@@ -40,6 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.name.setText(data.getDataName());
         holder.type.setText(data.getDataDescription());
         holder.city.setText(data.getDataCity());
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +73,80 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 intent.putExtra("Longitude", dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude());
                 intent.putExtra("Uuid", dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid());
                 context.startActivity(intent);
+            }
+        });
+
+        final String key = fAuth.getCurrentUser().getUid() + dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid();
+        holder.favoriteChecker(key);
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                String name = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataName();
+                String desc = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataDescription();
+                String type = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataType();
+                String city = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCity();
+                String country = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCountry();
+                String latitude = dataClass.get(holder.getAbsoluteAdapterPosition()).getLatitude();
+                String longitude =dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude();
+                String uuid = dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid();
+                String imageURL = dataClass.get(holder.getAbsoluteAdapterPosition()).getImageURL();
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                String userID = fAuth.getCurrentUser().getUid();
+
+                FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+                fStore.collection("favorites").document(userID + uuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()==false)
+                        {
+                            button.setBackgroundResource(R.drawable.baseline_favorite_24);
+                            button.getLayoutParams().height = 60;
+                            button.getLayoutParams().width = 60;
+                            DocumentReference documentReference = fStore.collection("favorites").document(userID + uuid);
+                            Map<String, Object> favorite = new HashMap<>();
+                            favorite.put("name", name);
+                            favorite.put("desc", desc);
+                            favorite.put("type", type);
+                            favorite.put("city", city);
+                            favorite.put("country", country);
+                            favorite.put("latitude", latitude);
+                            favorite.put("longitude", longitude);
+                            favorite.put("imageURL", imageURL);
+                            favorite.put("uuid", String.valueOf(uuid));
+                            favorite.put("user", userID);
+                            documentReference.set(favorite).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }
+                        else
+                        {
+                            button.setBackgroundResource(R.drawable.outline_favorite_border_24);
+                            button.getLayoutParams().height = 60;
+                            button.getLayoutParams().width = 60;
+                            fStore.collection("favorites").document(userID + uuid)
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @SuppressLint("NotifyDataSetChanged")
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Deleted", "DocumentSnapshot successfully deleted!");
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("Not deleted", "Error deleting document", e);
+                                        }
+                                    });
+                        }
+                    }
+                });
+
             }
         });
     }
@@ -76,6 +168,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         ImageView image;
         TextView name, type, city;
         CardView item;
+        ImageButton favorite;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +177,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             type = itemView.findViewById(R.id.typeR);
             city = itemView.findViewById(R.id.cityR);
             item = itemView.findViewById(R.id.item);
+            favorite = itemView.findViewById(R.id.favoriteButton);
         }
+
+        public void favoriteChecker(String key) {
+            favorite = itemView.findViewById(R.id.favoriteButton);
+            FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+            fStore.collection("favorites").document(key).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists() == false) {
+                        favorite.setImageResource(R.drawable.outline_favorite_border_24);
+                    } else {
+                        favorite.setImageResource(R.drawable.baseline_favorite_24);
+                    }
+
+                }
+            });
+        }
+
     }
 }
