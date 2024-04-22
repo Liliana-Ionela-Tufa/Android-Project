@@ -12,7 +12,7 @@
     <string name="error_while_logging_in_login">Error while logging in</string>
     <string name="submit_login">Submit</string>
     <string name="register_now">Register now</string>
-    <string name="Logout">Logout</string>
+    <string name="Logout">Log out</string>
     <string name="hello">Hello, </string>
     <string name="name">Name</string>
     <string name="loading">Loading…</string>
@@ -34,4 +34,9 @@
     <string name="delete">Delete</string>
     <string name="Edit">Edit</string>
     <string name="see_favorites">See favorites</string>
+    <string name="Welcome">Welcome</string>
+    <string name="text1">Discover the best places to visit and much more!</string>
+    <string name="all">See all</string>
+    <string name="editprofile">Edit profile</string>
+    <string name="Email">Email</string>
 </resources>

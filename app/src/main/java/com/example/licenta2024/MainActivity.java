@@ -87,15 +87,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        seeFaves = findViewById(R.id.seeFaves);
-        seeFaves.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
-                startActivity(intent);
-            }
-        });
+//
+//        seeFaves = findViewById(R.id.seeFaves);
+//        seeFaves.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         Event();

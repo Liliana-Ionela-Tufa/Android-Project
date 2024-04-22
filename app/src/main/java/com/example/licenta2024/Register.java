@@ -35,8 +35,8 @@ import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
-        TextInputEditText editTextUsername, editTextEmail, editTextPassword;
-        String username, email, password, role;
+        TextInputEditText editTextLastName, editTextFirstName, editTextPhone, editTextEmail, editTextPassword;
+        String firstName, lastName, phone, email, password, role;
         TextView textViewError, textViewLogin;
         Button buttonSubmit;
         ProgressBar progressBar;
@@ -53,7 +53,9 @@ public class Register extends AppCompatActivity {
         protected void onCreate (Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_register);
-            editTextUsername = findViewById(R.id.username);
+            editTextFirstName = findViewById(R.id.firstName);
+            editTextLastName = findViewById(R.id.lastName);
+            editTextPhone = findViewById(R.id.phone);
             editTextEmail = findViewById(R.id.email);
             editTextPassword = findViewById(R.id.password);
             textViewError = findViewById(R.id.error);
@@ -97,7 +99,9 @@ public class Register extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    username = editTextUsername.getText().toString();
+                    firstName = editTextFirstName.getText().toString();
+                    lastName = editTextLastName.getText().toString();
+                    phone = editTextPhone.getText().toString();
                     email = editTextEmail.getText().toString();
                     password = editTextPassword.getText().toString();
                     role = "user";
@@ -108,7 +112,7 @@ public class Register extends AppCompatActivity {
                     }
                     password = new String(encrypt);
 
-                    if (username.length() == 0 || email.length() == 0 || password.length() == 0) {
+                    if (firstName.length() == 0 || lastName.length() == 0 || phone.length()==0 || email.length()==0 || password.length() == 0) {
                         Toast.makeText(Register.this, "All field are required", Toast.LENGTH_SHORT).show();
                         fields = false;
 
@@ -122,7 +126,9 @@ public class Register extends AppCompatActivity {
                                 userID = fAuth.getCurrentUser().getUid();
                                 DocumentReference documentReference = fStore.collection("users").document(userID);
                                 Map<String, Object> user = new HashMap<>();
-                                user.put("username", username);
+                                user.put("firstName", firstName);
+                                user.put("lastName", lastName);
+                                user.put("phone", phone);
                                 user.put("email", email);
                                 user.put("role", "user");
                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -30,7 +30,7 @@ public class FavoritesList extends AppCompatActivity {
     FirebaseFirestore fStore;
     RecyclerView recyclerView;
     ArrayList<DataClass> dataList;
-    MyAdapter myAdapter;
+    AdapterFavorites myAdapter;
     Button goBack;
 
     @Override
@@ -43,7 +43,7 @@ public class FavoritesList extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataList = new ArrayList<DataClass>();
-        myAdapter = new MyAdapter(FavoritesList.this, dataList);
+        myAdapter = new AdapterFavorites(FavoritesList.this, dataList);
         recyclerView.setAdapter(myAdapter);
 
         goBack = findViewById(R.id.goBack);

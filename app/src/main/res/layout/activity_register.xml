@@ -24,7 +24,7 @@
         android:layout_marginBottom="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/username"
+            android:id="@+id/firstName"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/darkblue_border"
@@ -32,9 +32,47 @@
             android:padding="16dp"
             android:gravity="start|center_vertical"
             android:textColor="@color/darkblue"
-            android:hint="Enter username" />
+            android:hint="Enter first name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastName"
+            android:layout_width="match_parent"
+            android:hint="Enter last name"
+            android:layout_height="60dp"
+            android:background="@drawable/darkblue_border"
+            android:layout_marginTop="20dp"
+            android:padding="16dp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/darkblue"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:hint="Enter phone number"
+            android:layout_height="60dp"
+            android:background="@drawable/darkblue_border"
+            android:layout_marginTop="20dp"
+            android:padding="16dp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/darkblue"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
