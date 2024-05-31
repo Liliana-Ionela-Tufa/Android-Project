@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminMain"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Upload attraction"
+        android:textSize="18dp"
+        android:id="@+id/uploadAttraction"
+        android:textAllCaps="false"
+        android:layout_marginTop="200dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Upload attraction manually"
+        android:textSize="18dp"
+        android:id="@+id/uploadManually"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        tools:ignore="DuplicateIds" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Update/delete attraction"
+        android:textSize="18dp"
+        android:id="@+id/updateDelete"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Delete review"
+        android:textSize="18dp"
+        android:id="@+id/deleteReview"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Delete user"
+        android:textSize="18dp"
+        android:id="@+id/deleteUser"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="@string/Logout"
+        android:id="@+id/logout"
+        android:textSize="18sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="150dp"
+        app:cornerRadius = "20dp"
+        android:background="@drawable/roundedbutton"
+        android:textAllCaps="false"/>
+</LinearLayout>

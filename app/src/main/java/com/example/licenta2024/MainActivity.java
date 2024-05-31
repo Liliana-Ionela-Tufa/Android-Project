@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,16 +39,14 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
-    DocumentReference documentReference;
-    TextView nameUser;
-    Button logout, seeFaves;
-
-    ImageButton favorite;
     RecyclerView recyclerView;
     ArrayList <DataClass> dataList;
     MyAdapter myAdapter;
 
     SearchView searchView;
+
+    LinearLayout layoutHome, layoutProfile, layoutFavorites;
+
 
 
 
@@ -61,41 +60,49 @@ public class MainActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
-//        nameUser = findViewById(R.id.nameUser);
-//        documentReference = fStore.collection("users").document(userID);
-//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-//                nameUser.setText(documentSnapshot.getString("username"));
-//            }
-//        });
 
+        layoutHome = findViewById(R.id.layoutHome);
+        layoutHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewMainActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        layoutFavorites = findViewById(R.id.layoutFavorites);
+        layoutProfile = findViewById(R.id.layoutProfile);
 
+        layoutFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
+                startActivity(intent);
+            }
+        });
+
+        layoutProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, UserProfile.class);
+                startActivity(intent);
+            }
+        });
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataList = new ArrayList<DataClass>();
         myAdapter = new MyAdapter(MainActivity.this, dataList);
         recyclerView.setAdapter(myAdapter);
-        logout = findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
+
+
+        layoutProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
                 startActivity(intent);
             }
         });
-//
-//        seeFaves = findViewById(R.id.seeFaves);
-//        seeFaves.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, FavoritesList.class);
-//                startActivity(intent);
-//            }
-//        });
 
 
         Event();
@@ -142,11 +149,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                             myAdapter.notifyDataSetChanged();
 
-//                            for(DataClass data : dataList)
-//                            {
-//                                Log.d("maomor", data.getDataType() + " => " + data.getImageURL());
-//
-//                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_edit"
+            android:icon="@drawable/baseline_edit_24"
+            android:title="Edit profile"
+            android:clickable="true"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="Log out"
+            android:clickable="true"/>
+
+    </group>
+    <item
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_delete"
+                android:icon="@drawable/baseline_delete_forever_24"
+                android:title="Delete account"
+                android:clickable="true"/>
+        </menu>
+
+    </item>
+
+</menu>

@@ -39,4 +39,9 @@
     <string name="all">See all</string>
     <string name="editprofile">Edit profile</string>
     <string name="Email">Email</string>
+    <string name="title">title</string>
+    <string name="description">description</string>
+    <string name="username">username</string>
+    <string name="email">email</string>
+    <string name="date">date</string>
 </resources>

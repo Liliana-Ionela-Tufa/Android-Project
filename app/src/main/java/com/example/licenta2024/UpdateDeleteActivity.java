@@ -89,11 +89,6 @@ public class UpdateDeleteActivity extends AppCompatActivity {
                             }
                             adapterAdmin.notifyDataSetChanged();
 
-//                            for(DataClass data : dataList)
-//                            {
-//                                Log.d("maomor", data.getDataType() + " => " + data.getImageURL());
-//
-//                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

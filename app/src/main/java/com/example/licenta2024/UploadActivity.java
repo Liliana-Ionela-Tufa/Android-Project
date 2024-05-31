@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -23,7 +24,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -91,6 +95,22 @@ public class UploadActivity extends AppCompatActivity {
                 activityResultLauncher.launch(photoPicker);
             }
         });
+
+        Bundle bundle = getIntent().getExtras();
+        if(!bundle.isEmpty())
+        {
+            String id = bundle.getString("id");
+            DocumentReference documentReference = fStore.collection("places").document(id);
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    uploadName.setText(value.getString("name"));
+                    uploadCity.setText(value.getString("city"));
+                    uploadCountry.setText(value.getString("country"));
+                }
+            });
+
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +173,7 @@ public class UploadActivity extends AppCompatActivity {
             public void onSuccess(Void unused) {
                 Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 finish();
-                Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
+                Intent intent = new Intent(UploadActivity.this, AdminMain.class);
                 startActivity(intent);
                 finish();
             }

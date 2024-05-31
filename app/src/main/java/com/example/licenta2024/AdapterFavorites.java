@@ -55,7 +55,7 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
         DataClass data = dataClass.get(position);
         Glide.with(context).load(data.getImageURL()).into(holder.image);
         holder.name.setText(data.getDataName());
-        holder.type.setText(data.getDataDescription());
+        holder.type.setText(data.getDataType());
         holder.city.setText(data.getDataCity());
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
@@ -143,6 +143,9 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
                                             Log.w("Not deleted", "Error deleting document", e);
                                         }
                                     });
+                            dataClass.remove(holder.getAbsoluteAdapterPosition());
+                            notifyItemRemoved(holder.getAbsoluteAdapterPosition());
+                            notifyDataSetChanged();
                         }
                     }
                 });

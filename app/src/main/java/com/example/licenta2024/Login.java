@@ -122,7 +122,7 @@ public class Login extends AppCompatActivity {
                                         }
                                         else {
                                             Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                                            Intent intent = new Intent(getApplicationContext(), AdminMain.class);
                                             startActivity(intent);
                                         }
                                     }

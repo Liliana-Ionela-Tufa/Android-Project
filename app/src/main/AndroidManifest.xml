@@ -10,12 +10,39 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:noHistory="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Licenta2024"
         tools:targetApi="31">
         <activity
-            android:name=".Login"
+            android:name=".DeleteUser"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteReviews"
+            android:exported="false" />
+        <activity
+            android:name=".UploadAttraction"
+            android:exported="false" />
+        <activity
+            android:name=".AdminMain"
+            android:exported="false" />
+        <activity
+            android:name=".PickAttraction"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBu25Kb4hIc6GtTGinKoL_l7URTyJDSNk8" />
+
+        <activity
+            android:name=".ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfile"
             android:exported="false" />
         <activity
             android:name=".Register"
@@ -48,7 +75,7 @@
             android:name=".UpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".UserProfile"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

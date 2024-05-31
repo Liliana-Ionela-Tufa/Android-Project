@@ -89,6 +89,8 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="@string/submit_login"
+        android:background="@drawable/roundedbutton"
+        android:textAllCaps="false"
         />
 
     <TextView

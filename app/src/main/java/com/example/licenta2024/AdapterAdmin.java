@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,11 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
 
@@ -55,9 +60,9 @@ public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseFirestore fAuth;
-                fAuth = FirebaseFirestore.getInstance();
-                fAuth.collection("touristic-attraction").document(data.getUuid())
+                FirebaseFirestore fStore;
+                fStore = FirebaseFirestore.getInstance();
+                fStore.collection("touristic-attraction").document(data.getUuid())
                         .delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @SuppressLint("NotifyDataSetChanged")
@@ -76,6 +81,46 @@ public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
                                 Log.w("Not deleted", "Error deleting document", e);
                             }
                         });
+
+
+                fStore.collection("reviews").whereEqualTo("attractionID", data.getUuid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot snapshot) {
+                        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+                        List<DocumentSnapshot> snapshotList = snapshot.getDocuments();
+                        for(DocumentSnapshot snap : snapshotList)
+                        {
+                            ArrayList<String>list = (ArrayList<String>) snap.get("picturesURL");
+                            for(String URL : list)
+                            {
+                                StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
+                                reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        //Toast.makeText(context, "Picture deleted", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "Picture not deleted", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            batch.delete(snap.getReference());
+                        }
+                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("reviews", "deleted");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("reviews", "reviews not deleted");
+                            }
+                        });
+                    }
+                });
                 String URL = data.getImageURL();
                 StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
                 reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -89,6 +134,9 @@ public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
                         Toast.makeText(context, "Picture not deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
+                dataClass.remove(holder.getAbsoluteAdapterPosition());
+                notifyItemRemoved(holder.getAbsoluteAdapterPosition());
+                notifyDataSetChanged();
             }
         });
 
@@ -129,7 +177,7 @@ class ViewHolderAdmin extends RecyclerView.ViewHolder{
     TextView name, type, city;
     CardView item;
 
-    Button delete, edit;
+    ImageButton delete, edit;
 
     public ViewHolderAdmin(@NonNull View itemView) {
         super(itemView);

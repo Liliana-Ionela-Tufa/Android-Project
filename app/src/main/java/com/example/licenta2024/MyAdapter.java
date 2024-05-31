@@ -55,7 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         DataClass data = dataClass.get(position);
         Glide.with(context).load(data.getImageURL()).into(holder.image);
         holder.name.setText(data.getDataName());
-        holder.type.setText(data.getDataDescription());
+        holder.type.setText(data.getDataType());
         holder.city.setText(data.getDataCity());
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
 

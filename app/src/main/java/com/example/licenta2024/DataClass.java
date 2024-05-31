@@ -1,5 +1,7 @@
 package com.example.licenta2024;
 
+import java.util.ArrayList;
+
 public class DataClass {
 
     private String dataName;
@@ -14,6 +16,111 @@ public class DataClass {
     private  String uuid;
 
     private  String user;
+
+    private String firstName, lastName, phone;
+
+    private String attractionID;
+    private String userID;
+    private String reviewID;
+    private String title;
+    private String review;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    private String date;
+    private ArrayList<String> picturesURL;
+
+    public DataClass( String userID) {
+        this.userID = userID;
+    }
+
+    public DataClass(String attractionID, String userID, String reviewID, String title, String review, ArrayList<String> picturesURL, String date) {
+        this.attractionID = attractionID;
+        this.userID = userID;
+        this.reviewID = reviewID;
+        this.title = title;
+        this.review = review;
+        this.picturesURL = picturesURL;
+        this.date =date;
+    }
+
+    public String getAttractionID() {
+        return attractionID;
+    }
+
+    public void setAttractionID(String attractionID) {
+        this.attractionID = attractionID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getReviewID() {
+        return reviewID;
+    }
+
+    public void setReviewID(String reviewID) {
+        this.reviewID = reviewID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public ArrayList<String> getPicturesURL() {
+        return picturesURL;
+    }
+
+    public void setPicturesURL(ArrayList<String> picturesURL) {
+        this.picturesURL = picturesURL;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public DataClass(String dataName, String dataDescription, String dataType, String dataCity, String dataCountry, String latitude, String longitude, String imageURL, String uuid, String user) {
         this.dataName = dataName;

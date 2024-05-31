@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UploadActivity">
+    tools:context=".UploadAttraction">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -33,16 +33,7 @@
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:textColor="@color/darkblue"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/pick_address"
-                android:id="@+id/addAddress"
-                android:textSize="18sp"
-                android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"
-                android:background="@drawable/roundedbutton"
-                android:textAllCaps="false"/>
+
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="130dp"
@@ -106,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="@string/submit2"
-                android:id="@+id/submit2"
+                android:id="@+id/submit"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
                 app:cornerRadius = "20dp"
