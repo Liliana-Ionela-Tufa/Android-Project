@@ -8,13 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminMain extends AppCompatActivity {
 
-    Button uploadAttraction, uploadManually, updateDelete, deleteReview, deleteUser, logout;
+    Button uploadAttraction, uploadManually, updateDelete, deleteReview, deleteUser;
+    ImageButton logout;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,7 +70,8 @@ public class AdminMain extends AppCompatActivity {
             }
         });
 
-        deleteUser.setOnClickListener(new View.OnClickListener() {
+
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();

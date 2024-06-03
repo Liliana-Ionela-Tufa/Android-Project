@@ -171,7 +171,6 @@ public class UpdateActivity extends AppCompatActivity {
                 Toast.makeText(UpdateActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 finish();
                 Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                Log.d("iax", name);
                 startActivity(intent);
                 finish();
             }

@@ -1,7 +1,6 @@
 package com.example.licenta2024;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -21,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -41,7 +41,7 @@ public class UploadAttraction extends AppCompatActivity {
     Button submit;
     TextView uploadName, uploadDescription, uploadCity, uploadCountry, uploadType;
     String imageURL;
-    String id, name, city, country, latitude, longitude;
+    String id, name, city, country, latitude, longitude, openingHours;
 
 
     FirebaseFirestore fStore;
@@ -62,21 +62,33 @@ public class UploadAttraction extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
 
+
         Bundle bundle = getIntent().getExtras();
         if(!bundle.isEmpty())
         {
             id = bundle.getString("id");
-            Glide.with(UploadAttraction.this).load(bundle.getString("photoUrl")).into(uploadImage);
-            imageURL = bundle.getString("photoUrl");
-            latitude = bundle.getString("lat");
-            longitude = bundle.getString("lng");
-            name = bundle.getString("name");
-            uploadName.setText(name);
-            city = bundle.getString("city");
-            uploadCity.setText(city);
-            country = bundle.getString("country");
-            uploadCountry.setText(country);
+//            Glide.with(UploadAttraction.this).load(bundle.getString("photoUrl")).into(uploadImage);
+//            imageURL = bundle.getString("photoUrl");
+//            latitude = bundle.getString("lat");
+//            longitude = bundle.getString("lng");
+//            name = bundle.getString("name");
+//            uploadName.setText(name);
+//            city = bundle.getString("city");
+//            uploadCity.setText(city);
+//            country = bundle.getString("country");
+//            uploadCountry.setText(country);
+            DocumentReference documentReference = fStore.collection("touristic-attraction").document(id);
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@com.google.firebase.database.annotations.Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                    uploadCountry.setText(documentSnapshot.getString("country"));
+                    uploadName.setText(documentSnapshot.getString("name"));
+                    uploadCity.setText(documentSnapshot.getString("city"));
+                    Glide.with(UploadAttraction.this).load(documentSnapshot.getString("imageURL")).into(uploadImage);
+                    imageURL = documentSnapshot.getString("imageURL");
 
+                }
+            });
 
         }
 
@@ -103,33 +115,50 @@ public class UploadAttraction extends AppCompatActivity {
 
 
         DocumentReference documentReference = fStore.collection("touristic-attraction").document(id);
-        Map<String, Object> attraction = new HashMap<>();
-        attraction.put("name", name);
-        attraction.put("desc", desc);
-        attraction.put("type", type);
-        attraction.put("city", city);
-        attraction.put("country", country);
-        attraction.put("latitude", latitude);
-        attraction.put("longitude", longitude);
-        attraction.put("imageURL", imageURL);
-        attraction.put("uuid", id);
+//        Map<String, Object> attraction = new HashMap<>();
+//        attraction.put("name", name);
+//        attraction.put("desc", desc);
+//        attraction.put("type", type);
+//        attraction.put("city", city);
+//        attraction.put("country", country);
+//        attraction.put("latitude", latitude);
+//        attraction.put("longitude", longitude);
+//        attraction.put("imageURL", imageURL);
+//        attraction.put("uuid", id);
 
-        documentReference.set(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(UploadAttraction.this, "Saved", Toast.LENGTH_SHORT).show();
-                finish();
-                Intent intent = new Intent(UploadAttraction.this, AdminMain.class);
-                startActivity(intent);
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UploadAttraction.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//        documentReference.set(attraction).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//                Toast.makeText(UploadAttraction.this, "Saved", Toast.LENGTH_SHORT).show();
+//                finish();
+//                Intent intent = new Intent(UploadAttraction.this, AdminMain.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(UploadAttraction.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+        documentReference.update("name", name, "desc", desc,"type", type, "country", country, "city", city)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(UploadAttraction.this, "Saved", Toast.LENGTH_SHORT).show();
+                        finish();
+//                        Intent intent = new Intent(UploadAttraction.this, MainActivity.class);
+//                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(UploadAttraction.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
-            }
-        });
+                    }
+                });
 
     }
 }

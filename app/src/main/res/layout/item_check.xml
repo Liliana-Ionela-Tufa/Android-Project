@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:id="@+id/item_check">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:text="Name"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:text="Description"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/city"
+        android:text="City"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <CheckBox
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/checkbox"
+        />
+
+</androidx.cardview.widget.CardView>

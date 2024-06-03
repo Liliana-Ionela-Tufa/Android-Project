@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateRoute"
+    tools:ignore="ExtraText">
+
+    <ImageButton
+        android:id="@+id/goBack"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@android:color/transparent"
+        android:padding="5dp"
+        android:src="@drawable/baseline_keyboard_backspace_24_gray"
+        android:layout_marginStart="330dp"
+        android:contentDescription="TODO" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="On which date would you like to go explore?"
+        android:textAlignment="center"
+        android:textColor="@color/babyblue"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="150dp"/>
+
+
+    <Button
+        android:id="@+id/datePickerButton"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Select Date"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="228dp"
+        android:layout_marginLeft="125dp"
+        />
+
+    <TextView
+        android:id="@+id/selectedDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No date selected"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="259dp"
+        android:layout_marginTop="298dp"
+        android:textColor="@color/babyblue"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="115dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Would you like a personalised experience?"
+        android:textAlignment="center"
+        android:textColor="@color/babyblue"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+
+        android:layout_marginTop="433dp"/>
+
+    <Button
+        android:id="@+id/yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="Yes"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="505dp"
+        android:layout_marginTop="533dp"
+        android:layout_marginLeft="70dp"/>
+
+    <Button
+        android:id="@+id/no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedbutton"
+        android:text="No"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="263dp"
+        tools:layout_editor_absoluteY="505dp"
+        android:layout_marginTop="533dp"
+        android:layout_marginLeft="250dp"/>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

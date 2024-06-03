@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".OptionsMenu"
+    tools:ignore="MissingClass">
+
+    <!-- Number of attractions -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maximum number of Attractions"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/num_attractions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <!-- Type of attractions -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Types of Attractions"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"/>
+
+
+    <Button
+        android:id="@+id/btn_select_types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Types of Attractions"
+        android:background="@drawable/roundedbutton"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maximum Distance (km)"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/max_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+
+    <!-- Button to submit and show results -->
+    <Button
+        android:id="@+id/btn_show_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Results"
+        android:background="@drawable/roundedbutton"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        android:layout_marginTop="40dp"/>
+</LinearLayout>

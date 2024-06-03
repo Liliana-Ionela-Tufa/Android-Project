@@ -29,6 +29,7 @@ import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.LocationBias;
+import com.google.android.libraries.places.api.model.Period;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
@@ -89,8 +90,9 @@ public class PickAttraction extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (placesAdapter.getCount() > 0) {
                     detailPlace(placesAdapter.predictionList.get(i).getPlaceId());
-//                    Intent intent = new Intent(PickAttraction.this, UploadAttraction.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(PickAttraction.this, UploadAttraction.class);
+                    intent.putExtra("id", placesAdapter.predictionList.get(i).getPlaceId());
+                    startActivity(intent);
                 }
             }
         });
@@ -109,7 +111,8 @@ public class PickAttraction extends AppCompatActivity {
     private void detailPlace(String placeID) {
         final List<Place.Field> placeFields = Arrays.asList(
                 Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
-                Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS
+                Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS, Place.Field.PHOTO_METADATAS,
+                Place.Field.OPENING_HOURS
         );
         final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeID, placeFields);
         placesClient.fetchPlace(request).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
@@ -176,13 +179,13 @@ public class PickAttraction extends AppCompatActivity {
 
     private void savePlaceToFirestore(Place place, String photoURL) {
         if (place.getLatLng() != null) {
-//            Map<String, Object> placeData = new HashMap<>();
-//            placeData.put("id", place.getId());
-//            placeData.put("name", place.getName());
-//            placeData.put("lat", place.getLatLng().latitude);
-//            placeData.put("lng", place.getLatLng().longitude);
-//            placeData.put("address", place.getAddress());
-//            placeData.put("photoUrl", photoURL);
+            Map<String, Object> placeData = new HashMap<>();
+            placeData.put("uuid", place.getId());
+            placeData.put("name", place.getName());
+            placeData.put("lat", place.getLatLng().latitude);
+            placeData.put("lng", place.getLatLng().longitude);
+            placeData.put("address", place.getAddress());
+            placeData.put("imageURL", photoURL);
 
 
             String city = null;
@@ -197,33 +200,39 @@ public class PickAttraction extends AppCompatActivity {
                 }
             }
 
-            Log.d("Upload attraction", String.valueOf(place.getLatLng().latitude));
+            placeData.put("city", city);
+            placeData.put("country", country);
+            if (place.getOpeningHours() != null) {
+                placeData.put("openinghours", place.getOpeningHours().getPeriods());
+            }
 
 
-            Intent intent = new Intent(PickAttraction.this, UploadAttraction.class);
-            intent.putExtra("id", place.getId());
-            intent.putExtra("name", place.getName());
-            intent.putExtra("lat", String.valueOf(place.getLatLng().latitude));
-            intent.putExtra("lng", String.valueOf(place.getLatLng().longitude));
-            intent.putExtra("address", place.getAddress());
-            intent.putExtra("photoUrl", photoURL);
-            intent.putExtra("city", city);
-            intent.putExtra("country", country);
-            startActivity(intent);
+            DocumentReference documentReference = firestore.collection("touristic-attraction").document(String.valueOf(place.getId()));
+            documentReference.set(placeData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d("PickAttraction", "Document successfully written!");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("PickAttraction", "Error writing document", e);
+                }
+            });
 
-//            DocumentReference documentReference = firestore.collection("places").document(String.valueOf(place.getId()));
-//            documentReference.set(placeData).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void unused) {
-//                    Log.d("PickAttraction", "Document successfully written!");
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Log.w("PickAttraction", "Error writing document", e);
-//                }
-//            });
+//            Intent intent = new Intent(PickAttraction.this, UploadAttraction.class);
+//            intent.putExtra("id", place.getId());
+//            intent.putExtra("name", place.getName());
+//            intent.putExtra("lat", String.valueOf(place.getLatLng().latitude));
+//            intent.putExtra("lng", String.valueOf(place.getLatLng().longitude));
+//            intent.putExtra("address", place.getAddress());
+//            intent.putExtra("photoUrl", photoURL);
+//            intent.putExtra("city", city);
+//            intent.putExtra("country", country);
+//            startActivity(intent);
         }
+
+
     }
 
     private void searchPlaces() {

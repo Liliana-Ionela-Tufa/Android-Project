@@ -16,6 +16,26 @@
         android:theme="@style/Theme.Licenta2024"
         tools:targetApi="31">
         <activity
+            android:name=".SeeRoutes"
+            android:exported="false" />
+        <activity
+            android:name=".ViewAllFilteredAttr"
+            android:exported="false" />
+        <activity
+            android:name=".CreatePersonalisedRoute"
+            android:exported="false" />
+        <activity
+            android:name=".OptionsMenu"
+            android:exported="false"
+            android:label="@string/title_activity_options_menu"
+            android:theme="@style/Theme.Licenta2024" />
+        <activity
+            android:name=".ChooseAttractions"
+            android:exported="false" />
+        <activity
+            android:name=".CreateRoute"
+            android:exported="false" />
+        <activity
             android:name=".DeleteUser"
             android:exported="false" />
         <activity

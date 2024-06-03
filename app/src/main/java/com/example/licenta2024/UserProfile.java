@@ -254,7 +254,7 @@ public class UserProfile extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.d("UserProfile", "Item clicked: " + item.getItemId());
+                //Log.d("UserProfile", "Item clicked: " + item.getItemId());
                 if(item.getItemId()==R.id.nav_logout)
                 {
                     Log.d("UserProfile", "Item clicked: " + item.getItemId());
@@ -277,6 +277,15 @@ public class UserProfile extends AppCompatActivity{
                 {
                         dialog.show();
                 }
+                else if (item.getItemId()==R.id.nav_route) {
+                    Intent intent = new Intent(UserProfile.this, CreateRoute.class);
+                    startActivity(intent);
+                }
+                else if (item.getItemId()==R.id.nav_view){
+                    Intent intent = new Intent(UserProfile.this, SeeRoutes.class);
+                    startActivity(intent);
+                }
+
                 return true;
             }
         });
