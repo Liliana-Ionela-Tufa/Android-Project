@@ -65,7 +65,11 @@ public class CreatePersonalisedRoute extends AppCompatActivity {
             Collections.shuffle(allData);
             dataList = new ArrayList<>(allData.subList(0, nr));
         }
-        adapterAvailableAttractions = new AdapterAvailableAttractions(CreatePersonalisedRoute.this, dataList, allData);
+        else
+        {
+            dataList = allData;
+        }
+        adapterAvailableAttractions = new AdapterAvailableAttractions(CreatePersonalisedRoute.this, dataList, allData, true);
         recyclerView.setAdapter(adapterAvailableAttractions);
 
         seeAll = findViewById(R.id.seeAll);

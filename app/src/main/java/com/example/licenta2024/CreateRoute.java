@@ -62,10 +62,9 @@ public class CreateRoute extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateRoute.this,
-                        (vw, year, month, dayOfMonth) -> {
+                        (datePicker, year, month, dayOfMonth) -> {
                             selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                             selectedDateText.setText(selectedDate);
-                            // Optionally, filter or refresh your tourist attractions based on the date selected
                         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
 

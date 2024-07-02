@@ -2,6 +2,7 @@ package com.example.licenta2024;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -57,7 +58,24 @@ public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
         holder.type.setText(data.getDataType());
         holder.city.setText(data.getDataCity());
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
+        Button cancel, delete;
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_box_delete_attraction);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bg));
+        dialog.setCancelable(false);
+
+        cancel = dialog.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        delete = dialog.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseFirestore fStore;
@@ -126,17 +144,25 @@ public class AdapterAdmin extends RecyclerView.Adapter<ViewHolderAdmin> {
                 reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Picture deleted", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Picture deleted", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Picture not deleted", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Picture not deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
                 dataClass.remove(holder.getAbsoluteAdapterPosition());
                 notifyItemRemoved(holder.getAbsoluteAdapterPosition());
                 notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
             }
         });
 

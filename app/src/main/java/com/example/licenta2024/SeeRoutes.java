@@ -2,19 +2,29 @@ package com.example.licenta2024;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +43,9 @@ public class SeeRoutes extends AppCompatActivity {
 
     AdapterRoutes adapterRoutes;
     RecyclerView recyclerView;
-    ArrayList <DataAttractionAvailability> dates;
+    ArrayList<DataAttractionAvailability> dates;
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +67,10 @@ public class SeeRoutes extends AppCompatActivity {
             finish();
         });
 
+
+
         fStore = FirebaseFirestore.getInstance();
-        fAuth =  FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
 
         String userID = fAuth.getCurrentUser().getUid();
 
@@ -65,9 +79,8 @@ public class SeeRoutes extends AppCompatActivity {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for(DocumentSnapshot snap : task.getResult())
-                    {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot snap : task.getResult()) {
                         Log.d("date", snap.getString("date"));
                         DataAttractionAvailability data = new DataAttractionAvailability(snap.getString("uuid"), snap.getString("date"));
                         dates.add(data);
@@ -78,6 +91,9 @@ public class SeeRoutes extends AppCompatActivity {
         });
 
 
+
     }
+
+
 }
 

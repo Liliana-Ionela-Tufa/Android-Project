@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@android:color/white"
+    android:background="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="Are you sure you want to
-                delete your account?"
+                delete this attraction?"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"

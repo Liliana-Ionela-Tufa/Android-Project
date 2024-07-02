@@ -81,12 +81,14 @@
             android:padding="10dp"
             android:hint="Leave a review..."
             android:minHeight="48dp"
-            android:inputType="text"
             android:layout_margin="10dp"
             android:background="@drawable/edit_text_rounded_corner"
             android:elevation="5dp"
             android:id="@+id/review"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            />
 
         <Button
             android:layout_width="150dp"

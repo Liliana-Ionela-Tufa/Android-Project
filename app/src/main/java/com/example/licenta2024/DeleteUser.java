@@ -29,15 +29,16 @@ public class DeleteUser extends AppCompatActivity {
     ArrayList<DataClass> dataList;
     AdapterDeleteUser adapterDeleteUser;
     ImageButton goBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_user);
         fStore = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.hasFixedSize();
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dataList = new ArrayList<DataClass>();
+        dataList = new ArrayList<>();
         adapterDeleteUser = new AdapterDeleteUser(DeleteUser.this, dataList);
         recyclerView.setAdapter(adapterDeleteUser);
         goBack = findViewById(R.id.goBack);
@@ -50,11 +51,9 @@ public class DeleteUser extends AppCompatActivity {
         });
 
         Event();
-
     }
 
-    private void Event(){
-
+    private void Event() {
         fStore.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -62,20 +61,17 @@ public class DeleteUser extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getString("role")=="user")
-                                {
+                                if ("user".equals(document.getString("role"))) {
                                     DataClass data = new DataClass(document.getString("userID"));
                                     dataList.add(data);
+                                    Log.d(TAG, "User added: " + document.getString("userID"));
                                 }
-
                             }
                             adapterDeleteUser.notifyDataSetChanged();
-
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
     }
 }

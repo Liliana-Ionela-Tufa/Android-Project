@@ -23,7 +23,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/uploadphoto"
+            android:src="@drawable/blankpicture"
             android:visibility="visible" />
 
         <TextView
@@ -53,13 +53,13 @@
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="140dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="12dp"
             android:layout_toEndOf="@id/imageUser"
-            android:maxLines="2"
+            android:maxLines="5"
             android:text="@string/description"
             android:textColor="@color/darkblue"
             android:textSize="15sp"

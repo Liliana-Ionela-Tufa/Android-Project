@@ -120,7 +120,6 @@ public class PickAttraction extends AppCompatActivity {
             public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
                 Place place = fetchPlaceResponse.getPlace();
                 if (place.getPhotoMetadatas() != null && !place.getPhotoMetadatas().isEmpty()) {
-                    // Fetch the first photo
                     fetchPlacePhoto(place, place.getPhotoMetadatas().get(0));
                 } else {
                     Log.d("PickAttraction", "No photo metadata found for place: " + place.getName());

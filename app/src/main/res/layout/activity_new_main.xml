@@ -14,9 +14,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -33,17 +33,14 @@
                     android:layout_height="110dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="250dp"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="27dp">
-
+                    app:cardCornerRadius="55dp"
+                    android:layout_gravity="top|start"
+                    app:cardElevation="4dp">
 
                     <ImageView
                         android:id="@+id/userPicture"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/baseline_person_24" />
                 </androidx.cardview.widget.CardView>
@@ -58,23 +55,19 @@
                     android:textSize="25sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    tools:ignore="MissingConstraints,NotSibling"
-                    tools:layout_editor_absoluteX="146dp"
-                    tools:layout_editor_absoluteY="59dp" />
+                    android:layout_gravity="top|start" />
 
                 <TextView
                     android:id="@+id/nameUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="150dp"
-                    android:layout_below="@id/hello"
+                    android:layout_marginTop="80dp"
                     android:text="@string/name"
                     android:textColor="@color/white"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="MissingConstraints,NotSibling"
-                    tools:layout_editor_absoluteX="146dp"
-                    tools:layout_editor_absoluteY="86dp" />
+                    android:layout_gravity="top|start" />
 
                 <TextView
                     android:id="@+id/text1"
@@ -87,10 +80,8 @@
                     android:textSize="22sp"
                     android:textStyle="italic"
                     android:textAlignment="center"
-                    tools:ignore="MissingConstraints,NotSibling"
-                    tools:layout_editor_absoluteX="146dp"
-                    tools:layout_editor_absoluteY="59dp" />
-            </RelativeLayout>
+                    android:layout_gravity="top|start" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/seeAll"
@@ -101,71 +92,44 @@
                 android:text="@string/all"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:textColor="@color/darkgreen"
-                tools:ignore="MissingConstraints,NotSibling"
-                tools:layout_editor_absoluteX="146dp"
-                tools:layout_editor_absoluteY="59dp" />
+                android:textColor="@color/darkgreen" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
-                android:scrollbars="vertical">
+                android:scrollbars="vertical" />
 
-            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-      >
+        app:layout_constraintStart_toStartOf="parent">
+
         <com.google.android.material.bottomappbar.BottomAppBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            >
+            android:theme="@style/Theme.MaterialComponents.Light">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:orientation="vertical">-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/home"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        app:srcCompat="@drawable/baseline_home_24" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/textHome"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="4dp"-->
-<!--                        android:text="Home"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textSize="12sp" />-->
-<!--                </LinearLayout>-->
-
                 <LinearLayout
+                    android:id="@+id/layoutFavorites"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:id="@+id/layoutFavorites">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/Favorites"
@@ -185,20 +149,18 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutProfile"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:id="@+id/layoutProfile">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/profile"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/baseline_person_24"
-                        android:contentDescription="TODO"
-                        tools:ignore="NestedWeights" />
+                        app:srcCompat="@drawable/baseline_person_24" />
 
                     <TextView
                         android:id="@+id/textProfile"
@@ -209,7 +171,6 @@
                         android:textAlignment="center"
                         android:textSize="12sp" />
                 </LinearLayout>
-
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
 

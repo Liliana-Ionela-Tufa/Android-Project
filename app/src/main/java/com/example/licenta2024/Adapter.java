@@ -17,41 +17,36 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     android.content.Context context;
     ArrayList<DataClass> dataClass;
 
-    public MyAdapter(Context context, ArrayList<DataClass> dataClass) {
+    public Adapter(Context context, ArrayList<DataClass> dataClass) {
         this.context = context;
         this.dataClass = dataClass;
     }
 
     @NonNull
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Adapter.MyViewHolder holder, int position) {
         DataClass data = dataClass.get(position);
         Glide.with(context).load(data.getImageURL()).into(holder.image);
         holder.name.setText(data.getDataName());
@@ -87,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 String city = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCity();
                 String country = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCountry();
                 String latitude = dataClass.get(holder.getAbsoluteAdapterPosition()).getLatitude();
-                String longitude =dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude();
+                String longitude = dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude();
                 String uuid = dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid();
                 String imageURL = dataClass.get(holder.getAbsoluteAdapterPosition()).getImageURL();
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -97,11 +92,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 fStore.collection("favorites").document(userID + uuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()==false)
-                        {
-                            button.setBackgroundResource(R.drawable.baseline_favorite_24);
-                            button.getLayoutParams().height = 60;
-                            button.getLayoutParams().width = 60;
+                        if (!documentSnapshot.exists()) {
+                            holder.favorite.setImageResource(R.drawable.baseline_favorite_24);
                             DocumentReference documentReference = fStore.collection("favorites").document(userID + uuid);
                             Map<String, Object> favorite = new HashMap<>();
                             favorite.put("name", name);
@@ -118,23 +110,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
-
                                 }
                             });
-                        }
-                        else
-                        {
-                            button.setBackgroundResource(R.drawable.outline_favorite_border_24);
-                            button.getLayoutParams().height = 60;
-                            button.getLayoutParams().width = 60;
+                        } else {
+                            holder.favorite.setImageResource(R.drawable.outline_favorite_border_24);
                             fStore.collection("favorites").document(userID + uuid)
                                     .delete()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @SuppressLint("NotifyDataSetChanged")
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d("Deleted", "DocumentSnapshot successfully deleted!");
-
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -146,9 +131,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         }
                     }
                 });
-
             }
         });
+
     }
 
     @Override

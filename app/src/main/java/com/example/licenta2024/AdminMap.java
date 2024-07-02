@@ -40,7 +40,6 @@ public class AdminMap extends AppCompatActivity implements OnMapReadyCallback {
             public void onMapClick(@NonNull LatLng point) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.title("Selected location");
-                // Setting the position of the marker
                 markerOptions.position(point);
                 if(marker!=null){
                     marker.remove();
@@ -48,7 +47,6 @@ public class AdminMap extends AppCompatActivity implements OnMapReadyCallback {
                 marker = map.addMarker(markerOptions);
 
 
-                //Get LatLng from touched point
 
                 String latitude = String.valueOf(marker.getPosition().latitude);
                 String longitude = String.valueOf(marker.getPosition().longitude);

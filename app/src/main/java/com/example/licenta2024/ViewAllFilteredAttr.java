@@ -46,7 +46,7 @@ public class ViewAllFilteredAttr extends AppCompatActivity {
         }
         filteredAttractions = getIntent().getParcelableArrayListExtra("filteredAttractions");
 
-        adapterAvailableAttractions = new AdapterAvailableAttractions(this, filteredAttractions);
+        adapterAvailableAttractions = new AdapterAvailableAttractions(this, filteredAttractions, true);
         recyclerView.setAdapter(adapterAvailableAttractions);
 
         Bundle bundle = getIntent().getExtras();
@@ -67,10 +67,20 @@ public class ViewAllFilteredAttr extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<String> checkedItems = new ArrayList<>();
+                ArrayList<String> availability = new ArrayList<>();
+                ArrayList<String> name = new ArrayList<>();
+                ArrayList<String> city = new ArrayList<>();
+                ArrayList<Double> latitude = new ArrayList<>();
+                ArrayList<Double> longitude = new ArrayList<>();
                 if (filteredAttractions.size() != 0) {
                     for (DataAttractionAvailability data : filteredAttractions) {
                         if (data.isChecked()) {
                             checkedItems.add(data.getAttractionID());
+                            availability.add(data.getAvailability());
+                            name.add(data.getName());
+                            city.add(data.getCity());
+                            latitude.add(data.getLatitude());
+                            longitude.add(data.getLongitude());
                         }
                     }
                     UUID uuid = UUID.randomUUID();
@@ -81,8 +91,13 @@ public class ViewAllFilteredAttr extends AppCompatActivity {
                     DocumentReference documentReference = fStore.collection("attractions-day-plan").document(String.valueOf(uuid));
                     Map<String, Object> plan = new HashMap<>();
                     plan.put("attrIDS", checkedItems);
+                    plan.put("availability", availability);
+                    plan.put("name", name);
+                    plan.put("city", city);
                     plan.put("userID", userID);
                     plan.put("date", date);
+                    plan.put("lat", latitude);
+                    plan.put("lng", longitude);
                     plan.put("uuid", String.valueOf(uuid));
 
                     documentReference.set(plan).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -142,23 +142,17 @@ public class ReviewActivity extends AppCompatActivity {
 //            }
             if(individualImage!=null)
             {
-                // Set the reference to the storage location where you want to upload the file
                 StorageReference fileReference = storageReference.child("Reviews photos").child(UUID.randomUUID().toString());
 
-                // Upload the file to the specified storage location
                 UploadTask uploadTask = fileReference.putFile(individualImage);
 
-                // Monitor the upload task for success or failure
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // File uploaded successfully, now get the download URL
                         fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                // Add the download URL to the list
                                 urlList.add(uri.toString());
-                                // If all files have been uploaded, proceed to upload data
                                 if(urlList.size() == uriArrayList.size())
                                     uploadData();
                             }
@@ -230,6 +224,8 @@ public class ReviewActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==1 && resultCode==RESULT_OK && data!=null)
         {
+            uriArrayList.clear();
+
             if(data.getClipData()!=null)
             {
                 int count = data.getClipData().getItemCount();

@@ -20,6 +20,21 @@
         android:layout_height="wrap_content"
         android:inputType="number" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick a city"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"/>
+
+
+    <Spinner
+        android:id="@+id/spinner_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/max_distance"
+        android:layout_margin="16dp" />
+
     <!-- Type of attractions -->
     <TextView
         android:layout_width="wrap_content"

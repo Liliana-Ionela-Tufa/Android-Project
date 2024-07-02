@@ -21,6 +21,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.lang.reflect.Array;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -66,7 +68,7 @@ public class ChooseAttractions extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataList = new ArrayList<DataAttractionAvailability>();
-        adapterAvailableAttractions = new AdapterAvailableAttractions(ChooseAttractions.this, dataList);
+        adapterAvailableAttractions = new AdapterAvailableAttractions(ChooseAttractions.this, dataList, true);
         recyclerView.setAdapter(adapterAvailableAttractions);
 
         save = findViewById(R.id.save);
@@ -74,11 +76,22 @@ public class ChooseAttractions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<String> checkedItems = new ArrayList<>();
+                ArrayList<String> availability = new ArrayList<>();
+                ArrayList<String> name = new ArrayList<>();
+                ArrayList<String> city = new ArrayList<>();
+                ArrayList<Double> latitude = new ArrayList<>();
+                ArrayList<Double> longitude = new ArrayList<>();
                 if (dataList.size() != 0) {
                     for (DataAttractionAvailability data : dataList) {
                         if (data.isChecked()) {
 
                             checkedItems.add(data.getAttractionID());
+                            availability.add(data.getAvailability());
+                            name.add(data.getName());
+                            city.add(data.getCity());
+                            latitude.add(data.getLatitude());
+                            longitude.add(data.getLongitude());
+
                         }
                     }
                     UUID uuid = UUID.randomUUID();
@@ -88,8 +101,13 @@ public class ChooseAttractions extends AppCompatActivity {
                     DocumentReference documentReference = fStore.collection("attractions-day-plan").document(String.valueOf(uuid));
                     Map<String, Object> plan = new HashMap<>();
                     plan.put("attrIDS", checkedItems);
+                    plan.put("availability", availability);
                     plan.put("userID", userID);
+                    plan.put("name", name);
+                    plan.put("city", city);
                     plan.put("date", date);
+                    plan.put("lat", latitude);
+                    plan.put("lng", longitude);
                     plan.put("uuid", String.valueOf(uuid));
 
                     documentReference.set(plan).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -121,13 +139,18 @@ public class ChooseAttractions extends AppCompatActivity {
                     if(placeDetails.get("openinghours")!=null) {
                         periods = (List<Map<String, Object>>) placeDetails.get("openinghours");
                         result = getPlaceOpeningHoursOnDay(periods, chosenDay);
+                        if(result==null)
+                            result = "Opening hours not available";
+                    }
+                    else
+                    {
+                        result = "Opening hours not available";
                     }
                     Log.d((String) placeDetails.get("name"), result);
                     if(result!=null)
                     {
                         DataAttractionAvailability data = new DataAttractionAvailability((String) placeDetails.get("uuid"),
-                                (String) placeDetails.get("name"), result, (String) placeDetails.get("city"),
-                                (String) placeDetails.get("country"), (Double) placeDetails.get("lat"), (Double) placeDetails.get("lng"), false);
+                                (String) placeDetails.get("name"), result, (String) placeDetails.get("city"), (Double) placeDetails.get("lat"), (Double) placeDetails.get("lng"), false);
                         dataList.add(data);
                     }
                 }
@@ -145,11 +168,8 @@ public class ChooseAttractions extends AppCompatActivity {
 
             if (open != null && close != null) {
                 String openDay = (String) open.get("day");
-                String closeDay = (String) close.get("day");
 
-                // Convert openDay and closeDay strings to DayOfWeek enum
                 DayOfWeek openDayOfWeek = DayOfWeek.valueOf(openDay);
-                DayOfWeek closeDayOfWeek = DayOfWeek.valueOf(closeDay);
 
                 if (openDayOfWeek == chosenDay) {
                     Map<String, Object> openTime = (Map<String, Object>) open.get("time");

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +20,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Licenta2024"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBu25Kb4hIc6GtTGinKoL_l7URTyJDSNk8" />
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".MapAttraction"
+            android:exported="false" />
+        <activity
+            android:name=".MapActivity"
+            android:exported="false"
+            android:hardwareAccelerated="false" />
+        <activity
+            android:name=".DetailsRoute"
+            android:exported="false" />
         <activity
             android:name=".SeeRoutes"
             android:exported="false" />
@@ -50,10 +75,6 @@
         <activity
             android:name=".PickAttraction"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBu25Kb4hIc6GtTGinKoL_l7URTyJDSNk8" />
 
         <activity
             android:name=".ReviewActivity"

@@ -1,11 +1,14 @@
 package com.example.licenta2024;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,12 +62,20 @@ public class AdapterReviewsDelete extends RecyclerView.Adapter<AdapterReviewsDel
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                    Glide.with(context).load(documentSnapshot.getString("imageURL")).into(holder.image);
-                    holder.name.setText(documentSnapshot.getString("lastName"));
+                    if (documentSnapshot != null && documentSnapshot.exists() && isActivityValid(holder)) {
+                        Glide.with(holder.itemView.getContext())
+                                .load(documentSnapshot.getString("imageURL"))
+                                .into(holder.image);
+                        holder.name.setText(documentSnapshot.getString("firstName"));
+                    }
                 }
             });
 
 
+        }
+        else {
+            holder.name.setText("Anonymous");
+            Glide.with(context).load(R.drawable.blankpicture);
         }
         holder.title.setText(data.getTitle());
         holder.description.setText(data.getReview());
@@ -76,7 +87,24 @@ public class AdapterReviewsDelete extends RecyclerView.Adapter<AdapterReviewsDel
         holder.recyclerView.setAdapter(adapterPhotos);
         adapterPhotos.notifyDataSetChanged();
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
+        Button cancel, delete;
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_box_delete_review);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bg));
+        dialog.setCancelable(false);
+
+        cancel = dialog.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        delete = dialog.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseFirestore fStore;
@@ -116,6 +144,13 @@ public class AdapterReviewsDelete extends RecyclerView.Adapter<AdapterReviewsDel
                 dataClass.remove(holder.getAbsoluteAdapterPosition());
                 notifyItemRemoved(holder.getAbsoluteAdapterPosition());
                 notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
             }
 
         });
@@ -123,6 +158,10 @@ public class AdapterReviewsDelete extends RecyclerView.Adapter<AdapterReviewsDel
 
     }
 
+    private boolean isActivityValid(@NonNull ViewHolder holder) {
+        Context context = holder.itemView.getContext();
+        return context instanceof Activity && !((Activity) context).isDestroyed();
+    }
     @Override
     public int getItemCount() {
         return dataClass.size();

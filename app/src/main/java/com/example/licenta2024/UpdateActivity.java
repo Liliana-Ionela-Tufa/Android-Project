@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -33,13 +34,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateActivity extends AppCompatActivity {
-    ImageView updateImage;
+    ImageView updateImage, goBack;
     Button addAddress, submit;
     TextView updateName, updateDescription, updateCity, updateCountry, updateType;
     String imageURL, latitude, longitude;
     Uri uri;
 
     FirebaseFirestore fStore;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,17 @@ public class UpdateActivity extends AppCompatActivity {
         updateCity = findViewById(R.id.updateCity);
         updateCountry = findViewById(R.id.updateCountry);
         updateType = findViewById(R.id.updateType);
-        addAddress = findViewById(R.id.updateAddAddress);
         submit = findViewById(R.id.submit2);
         fStore = FirebaseFirestore.getInstance();
+        goBack = findViewById(R.id.goBack);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(UpdateActivity.this, UpdateDeleteActivity.class);
+//                startActivity(intent);
+                finish();
+            }
+        });
 
 //        addAddress.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -136,7 +146,6 @@ public class UpdateActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // No new image selected, update data with the existing image URL
             updateData();
         }
     }

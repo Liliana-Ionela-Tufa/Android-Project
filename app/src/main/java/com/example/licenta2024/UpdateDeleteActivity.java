@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +34,8 @@ public class UpdateDeleteActivity extends AppCompatActivity {
     AdapterAdmin adapterAdmin;
     SearchView searchView;
 
+    ImageButton goBack;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,13 @@ public class UpdateDeleteActivity extends AppCompatActivity {
         adapterAdmin = new AdapterAdmin(UpdateDeleteActivity.this, dataList);
         recyclerView.setAdapter(adapterAdmin);
 
+        goBack = findViewById(R.id.goBack);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Event();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

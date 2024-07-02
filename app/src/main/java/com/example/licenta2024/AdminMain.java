@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminMain extends AppCompatActivity {
 
-    Button uploadAttraction, uploadManually, updateDelete, deleteReview, deleteUser;
+    Button uploadAttraction, updateDelete, deleteReview, deleteUser;
     ImageButton logout;
 
     @SuppressLint("MissingInflatedId")
@@ -24,7 +24,6 @@ public class AdminMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
         uploadAttraction = findViewById(R.id.uploadAttraction);
-        uploadManually = findViewById(R.id.uploadManually);
         updateDelete = findViewById(R.id.updateDelete);
         deleteReview = findViewById(R.id.deleteReview);
         deleteUser = findViewById(R.id.deleteUser);
@@ -38,13 +37,6 @@ public class AdminMain extends AppCompatActivity {
             }
         });
 
-        uploadManually.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminMain.this, UploadActivity.class);
-                startActivity(intent);
-            }
-        });
 
         updateDelete.setOnClickListener(new View.OnClickListener() {
             @Override

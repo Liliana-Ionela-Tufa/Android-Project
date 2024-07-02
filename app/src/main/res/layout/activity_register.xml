@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     tools:context=".Register">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-travel"
+            android:textSize="40sp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/babyblue"
+            android:textStyle="bold|italic" />
+
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/map_3271693"
+            android:layout_marginTop="0dp"/>
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,7 +45,8 @@
         android:layout_marginBottom="10dp"
         android:text="@string/register"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -93,6 +125,24 @@
             android:textColor="@color/darkblue"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:hint="@string/enter_password"
+                android:layout_height="60dp"
+                android:background="@drawable/darkblue_border"
+                android:layout_marginTop="20dp"
+                android:padding="16dp"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/darkblue"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -102,7 +152,7 @@
         android:layout_marginBottom="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
+            android:id="@+id/confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/darkblue_border"
@@ -110,7 +160,9 @@
             android:padding="16dp"
             android:gravity="start|center_vertical"
             android:textColor="@color/darkblue"
-            android:hint="@string/enter_password" />
+            android:hint="Re-enter password" />
+
+
 
         <ImageView
             android:id="@+id/show_hide_pwd"
@@ -159,5 +211,5 @@
         android:text="@string/login_now"
         android:textSize="15sp"
         android:textStyle="bold" />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

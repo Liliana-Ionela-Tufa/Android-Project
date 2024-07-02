@@ -43,6 +43,8 @@ public class UploadAttraction extends AppCompatActivity {
     String imageURL;
     String id, name, city, country, latitude, longitude, openingHours;
 
+    ImageView goBack;
+
 
     FirebaseFirestore fStore;
 
@@ -61,6 +63,14 @@ public class UploadAttraction extends AppCompatActivity {
         submit = findViewById(R.id.submit2);
         fStore = FirebaseFirestore.getInstance();
 
+        goBack = findViewById(R.id.goBack);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UploadAttraction.this, AdminMain.class);
+                startActivity(intent);
+            }
+        });
 
 
         Bundle bundle = getIntent().getExtras();
@@ -150,7 +160,7 @@ public class UploadAttraction extends AppCompatActivity {
                         finish();
 //                        Intent intent = new Intent(UploadAttraction.this, MainActivity.class);
 //                        startActivity(intent);
-                        finish();
+//                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

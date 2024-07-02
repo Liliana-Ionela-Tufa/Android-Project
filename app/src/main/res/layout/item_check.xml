@@ -2,10 +2,14 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/item_check">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_check"
+    app:cardCornerRadius="15dp"
+    android:elevation="5dp">
+
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:id="@+id/name"
         android:text="Name"
@@ -31,7 +35,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/city"
         android:text="City"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:textColor="@color/black"
         android:layout_marginLeft="300dp"
         android:layout_marginTop="10dp"
@@ -40,7 +44,7 @@
     <CheckBox
         android:layout_width="48dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="350dp"
+        android:layout_marginLeft="320dp"
         android:layout_marginTop="50dp"
         android:id="@+id/checkbox"
         />

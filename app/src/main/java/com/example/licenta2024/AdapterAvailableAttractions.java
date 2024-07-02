@@ -19,17 +19,21 @@ public class AdapterAvailableAttractions extends RecyclerView.Adapter<AdapterAva
     ArrayList<DataAttractionAvailability> fullDataList;
     Context context;
 
-    public AdapterAvailableAttractions (Context context, ArrayList<DataAttractionAvailability>dataList )
+    Boolean showCheckbox;
+
+    public AdapterAvailableAttractions (Context context, ArrayList<DataAttractionAvailability>dataList, Boolean showCheckbox )
     {
         this.context = context;
         this.dataList = dataList;
+        this.showCheckbox = showCheckbox;
     }
 
-    public AdapterAvailableAttractions (Context context, ArrayList<DataAttractionAvailability>dataList,  ArrayList<DataAttractionAvailability> fullDataList  )
+    public AdapterAvailableAttractions (Context context, ArrayList<DataAttractionAvailability>dataList,  ArrayList<DataAttractionAvailability> fullDataList, boolean showCheckbox  )
     {
         this.context = context;
         this.dataList = dataList;
         this.fullDataList = fullDataList;
+        this.showCheckbox = showCheckbox;
     }
     @NonNull
     @Override
@@ -43,15 +47,24 @@ public class AdapterAvailableAttractions extends RecyclerView.Adapter<AdapterAva
     public void onBindViewHolder(@NonNull AdapterAvailableAttractions.ViewHolder holder, int position) {
         DataAttractionAvailability data = dataList.get(position);
         holder.name.setText(data.getName());
-        holder.availability.setText(data.getAvailability());
+        if(data.getAvailability()!=null)
+            holder.availability.setText(data.getAvailability());
+        else
+            holder.availability.setText("Opening hours not available.");
         holder.city.setText(data.getCity());
 
-        holder.checkBox.setChecked(data.isChecked());
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            data.setChecked(isChecked);
-            dataList.set(position, data);
-            updateFullDataList(data);
-        });
+        if(showCheckbox) {
+            holder.checkBox.setChecked(data.isChecked());
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                data.setChecked(isChecked);
+                dataList.set(position, data);
+                updateFullDataList(data);
+            });
+        }
+        else
+        {
+            holder.checkBox.setVisibility(View.GONE);
+        }
 
 
     }

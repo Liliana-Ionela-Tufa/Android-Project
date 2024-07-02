@@ -17,6 +17,16 @@
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
+        <ImageButton
+            android:id="@+id/goBack"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/baseline_home_24"
+            android:layout_marginStart="300dp"
+            android:layout_marginTop="15dp"
+            android:contentDescription="TODO" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,21 +36,16 @@
             android:background="@drawable/darkblue_border">
 
 
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/upload_data"
+                android:text="Update data"
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:textColor="@color/darkblue"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/pick_address"
-                android:id="@+id/updateAddAddress"
-                android:textSize="18sp"
-                android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"/>
+
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="130dp"
@@ -61,14 +66,15 @@
                 android:textColor="@color/darkblue"/>
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/updateDesc"
                 android:background="@drawable/darkblue_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
                 android:hint="@string/enter_description"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/darkblue"/>
+                android:textColor="@color/darkblue"
+                android:inputType="textMultiLine"
+                android:gravity="top"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -107,6 +113,8 @@
                 android:id="@+id/submit2"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/roundedbutton"
+                android:textAllCaps="false"
                 app:cornerRadius = "20dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

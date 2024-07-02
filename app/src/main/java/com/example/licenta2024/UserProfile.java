@@ -108,10 +108,24 @@ public class UserProfile extends AppCompatActivity{
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserProfile.this, NewMainActivity.class);
-                startActivity(intent);
+//                String page = getIntent().getStringExtra("page");
+//                if(page.equals("main")) {
+                    Intent intent = new Intent(UserProfile.this, NewMainActivity.class);
+                    startActivity(intent);
+//                }
+//                else if (page.equals("favorites"))
+//                {
+//                    Intent intent = new Intent(UserProfile.this, FavoritesList.class);
+//                    startActivity(intent);
+//                }
+//                else
+//                {
+//                    Intent intent = new Intent(UserProfile.this, MainActivity.class);
+//                    startActivity(intent);
+//                }
             }
         });
+
 
 
         dialog = new Dialog(UserProfile.this);
@@ -193,12 +207,12 @@ public class UserProfile extends AppCompatActivity{
                 reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(UserProfile.this, "Picture deleted", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(UserProfile.this, "Picture deleted", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UserProfile.this, "Picture not deleted", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(UserProfile.this, "Picture not deleted", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -258,7 +272,7 @@ public class UserProfile extends AppCompatActivity{
                 if(item.getItemId()==R.id.nav_logout)
                 {
                     Log.d("UserProfile", "Item clicked: " + item.getItemId());
-                    Toast.makeText(UserProfile.this, "log out clicked", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(UserProfile.this, "log out clicked", Toast.LENGTH_SHORT).show();
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(UserProfile.this, Login.class);
                     UserProfile.this.startActivity(intent);

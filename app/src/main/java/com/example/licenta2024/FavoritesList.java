@@ -62,6 +62,7 @@ public class FavoritesList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FavoritesList.this, UserProfile.class);
+                intent.putExtra("page", "favorites");
                 startActivity(intent);
             }
         });

@@ -62,7 +62,7 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, FavoritesDetails.class );
+                Intent intent = new Intent(context, AttractionDetailsUser.class );
                 intent.putExtra("Image", dataClass.get(holder.getAbsoluteAdapterPosition()).getImageURL());
                 intent.putExtra("Name", dataClass.get(holder.getAbsoluteAdapterPosition()).getDataName());
                 intent.putExtra("Description", dataClass.get(holder.getAbsoluteAdapterPosition()).getDataDescription());
@@ -78,6 +78,7 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
 
         final String key = fAuth.getCurrentUser().getUid() + dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid();
         holder.favoriteChecker(key);
+
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
@@ -87,7 +88,7 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
                 String city = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCity();
                 String country = dataClass.get(holder.getAbsoluteAdapterPosition()).getDataCountry();
                 String latitude = dataClass.get(holder.getAbsoluteAdapterPosition()).getLatitude();
-                String longitude =dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude();
+                String longitude = dataClass.get(holder.getAbsoluteAdapterPosition()).getLongitude();
                 String uuid = dataClass.get(holder.getAbsoluteAdapterPosition()).getUuid();
                 String imageURL = dataClass.get(holder.getAbsoluteAdapterPosition()).getImageURL();
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -97,11 +98,8 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
                 fStore.collection("favorites").document(userID + uuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()==false)
-                        {
-                            button.setBackgroundResource(R.drawable.baseline_favorite_24);
-                            button.getLayoutParams().height = 60;
-                            button.getLayoutParams().width = 60;
+                        if (!documentSnapshot.exists()) {
+                            holder.favorite.setImageResource(R.drawable.baseline_favorite_24);
                             DocumentReference documentReference = fStore.collection("favorites").document(userID + uuid);
                             Map<String, Object> favorite = new HashMap<>();
                             favorite.put("name", name);
@@ -118,23 +116,16 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
-
                                 }
                             });
-                        }
-                        else
-                        {
-                            button.setBackgroundResource(R.drawable.outline_favorite_border_24);
-                            button.getLayoutParams().height = 60;
-                            button.getLayoutParams().width = 60;
+                        } else {
+                            holder.favorite.setImageResource(R.drawable.outline_favorite_border_24);
                             fStore.collection("favorites").document(userID + uuid)
                                     .delete()
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @SuppressLint("NotifyDataSetChanged")
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d("Deleted", "DocumentSnapshot successfully deleted!");
-
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -143,15 +134,12 @@ public class AdapterFavorites extends RecyclerView.Adapter<AdapterFavorites.View
                                             Log.w("Not deleted", "Error deleting document", e);
                                         }
                                     });
-                            dataClass.remove(holder.getAbsoluteAdapterPosition());
-                            notifyItemRemoved(holder.getAbsoluteAdapterPosition());
-                            notifyDataSetChanged();
                         }
                     }
                 });
-
             }
         });
+
     }
 
     @Override

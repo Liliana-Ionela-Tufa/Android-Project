@@ -3,7 +3,6 @@ package com.example.licenta2024;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,22 +13,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -41,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String userID;
     RecyclerView recyclerView;
     ArrayList <DataClass> dataList;
-    MyAdapter myAdapter;
+    Adapter adapter;
 
     SearchView searchView;
 
@@ -85,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, UserProfile.class);
+                intent.putExtra("page", "seeAll");
                 startActivity(intent);
             }
         });
@@ -92,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataList = new ArrayList<DataClass>();
-        myAdapter = new MyAdapter(MainActivity.this, dataList);
-        recyclerView.setAdapter(myAdapter);
+        adapter = new Adapter(MainActivity.this, dataList);
+        recyclerView.setAdapter(adapter);
 
 
         layoutProfile.setOnClickListener(new View.OnClickListener() {
@@ -125,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<DataClass> searchList = new ArrayList<>();
             for (DataClass dataClass: dataList){
                 if (dataClass.getDataName().toLowerCase().contains(text.toLowerCase()) || dataClass.getDataType().toLowerCase().contains(text.toLowerCase())||
-                dataClass.getDataCity().toLowerCase().contains(text.toLowerCase()))
+                dataClass.getDataCity().toLowerCase().contains(text.toLowerCase())|| dataClass.getDataCountry().toLowerCase().contains(text.toLowerCase()))
                 {
                     searchList.add(dataClass);
                 }
             }
-            myAdapter.searchDataList(searchList);
+            adapter.searchDataList(searchList);
         }
 
     private void Event(){
@@ -147,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                                         document.getString("country"),document.getString("latitude"),document.getString("longitude"), document.getString("imageURL"), document.getString("uuid") );
                                 dataList.add(data);
                             }
-                            myAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

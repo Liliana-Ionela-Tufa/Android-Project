@@ -1,30 +1,23 @@
 package com.example.licenta2024;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.internal.zzaf;
-import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -41,16 +34,13 @@ import java.util.List;
 public class AdapterDeleteUser extends RecyclerView.Adapter<AdapterDeleteUser.ViewHolder> {
 
     ArrayList<DataClass> dataClass;
-
     Context context;
     String ImageURL;
 
-    public  AdapterDeleteUser(Context context, ArrayList<DataClass>dataClass){
+    public AdapterDeleteUser(Context context, ArrayList<DataClass> dataClass) {
         this.context = context;
         this.dataClass = dataClass;
     }
-
-
 
     @NonNull
     @Override
@@ -64,128 +54,168 @@ public class AdapterDeleteUser extends RecyclerView.Adapter<AdapterDeleteUser.Vi
     public void onBindViewHolder(@NonNull AdapterDeleteUser.ViewHolder holder, int position) {
         DataClass data = dataClass.get(position);
         String userID = data.getUserID();
+        Log.d("userID", userID);
 
-
-        FirebaseFirestore fStore;
-        fStore = FirebaseFirestore.getInstance();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         DocumentReference documentReference = fStore.collection("users").document(userID);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException error) {
                 Glide.with(context).load(documentSnapshot.getString("imageURL")).into(holder.image);
                 holder.name.setText(documentSnapshot.getString("lastName") + " " + documentSnapshot.getString("firstName"));
                 holder.email.setText(documentSnapshot.getString("email"));
                 ImageURL = documentSnapshot.getString("imageURL");
-                Log.d("url", ImageURL);
+            }
+        });
 
+        Button cancel, delete;
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_box_delete_acc_admin);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
 
+        cancel = dialog.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        delete = dialog.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteUser(userID, holder, dialog);
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                fStore.collection("users").document(userID)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("Deleted", "DocumentSnapshot successfully deleted!");
-                                //Intent intent = new Intent(UserProfile.this, Login.class);
-                                //startActivity(intent);
-
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Not deleted", "Error deleting document", e);
-                            }
-                        });
-
-                FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-                fStore.collection("favorites").whereEqualTo("user", userID).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot snapshot) {
-                        WriteBatch batch = FirebaseFirestore.getInstance().batch();
-                        List<DocumentSnapshot> snapshotList = snapshot.getDocuments();
-                        for(DocumentSnapshot snap : snapshotList)
-                        {
-                            batch.delete(snap.getReference());
-                        }
-                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("favorites", "deleted");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("favorites", "favorites not deleted");
-                            }
-                        });
-                    }
-                });
-                StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(ImageURL);
-                reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        //Toast.makeText(UserProfile.this, "Picture deleted", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Toast.makeText(UserProfile.this, "Picture not deleted", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                fStore.collection("reviews").whereEqualTo("userID", userID).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot snapshot) {
-                        WriteBatch batch = FirebaseFirestore.getInstance().batch();
-                        List<DocumentSnapshot> snapshotList = snapshot.getDocuments();
-                        for(DocumentSnapshot snap : snapshotList)
-                        {
-                            ArrayList<String>list = (ArrayList<String>) snap.get("picturesURL");
-                            for(String URL : list)
-                            {
-                                StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
-                                reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        //Toast.makeText(context, "Picture deleted", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        //Toast.makeText(, "Picture not deleted", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                            batch.delete(snap.getReference());
-                        }
-                        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("reviews", "deleted");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("reviews", "reviews not deleted");
-                            }
-                        });
-                    }
-                });
-                dataClass.remove(holder.getAbsoluteAdapterPosition());
-                notifyItemRemoved(holder.getAbsoluteAdapterPosition());
-                notifyDataSetChanged();
+                dialog.show();
             }
         });
+    }
 
+    private void deleteUser(String userID, ViewHolder holder, Dialog dialog) {
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
+        fStore.collection("users").document(userID)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Deleted", "User document successfully deleted!");
+                        if (ImageURL != null && !ImageURL.isEmpty()) {
+                            deleteImage(ImageURL, new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    deleteFavorites(userID, holder, dialog);
+                                }
+                            });
+                        } else {
+                            deleteFavorites(userID, holder, dialog);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Not deleted", "Error deleting user document", e);
+                    }
+                });
+    }
+
+    private void deleteFavorites(String userID, ViewHolder holder, Dialog dialog) {
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        fStore.collection("favorites").whereEqualTo("user", userID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        WriteBatch batch = fStore.batch();
+                        for (DocumentSnapshot snap : task.getResult()) {
+                            batch.delete(snap.getReference());
+                        }
+                        batch.commit()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("favorites", "Favorites successfully deleted");
+                                        deleteReviews(userID, holder, dialog);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("favorites", "Error deleting favorites", e);
+                                    }
+                                });
+                    } else {
+                        Log.w("favorites", "Error finding favorites", task.getException());
+                    }
+                });
+    }
+
+    private void deleteReviews(String userID, ViewHolder holder, Dialog dialog) {
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        fStore.collection("reviews").whereEqualTo("userID", userID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        WriteBatch batch = fStore.batch();
+                        for (DocumentSnapshot snap : task.getResult()) {
+                            List<String> list = (List<String>) snap.get("picturesURL");
+                            if (list != null) {
+                                for (String URL : list) {
+                                    deleteImage(URL, null);
+                                }
+                            }
+                            batch.delete(snap.getReference());
+                        }
+                        batch.commit()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("reviews", "Reviews successfully deleted");
+                                        finishDeletion(holder, dialog);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("reviews", "Error deleting reviews", e);
+                                    }
+                                });
+                    } else {
+                        Log.w("reviews", "Error finding reviews", task.getException());
+                    }
+                });
+    }
+
+    private void deleteImage(String URL, OnSuccessListener<Void> onSuccessListener) {
+        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
+        reference.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Image", "Image successfully deleted");
+                        if (onSuccessListener != null) {
+                            onSuccessListener.onSuccess(aVoid);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Image", "Error deleting image", e);
+                    }
+                });
+    }
+
+    private void finishDeletion(ViewHolder holder, Dialog dialog) {
+        dataClass.remove(holder.getAbsoluteAdapterPosition());
+        notifyItemRemoved(holder.getAbsoluteAdapterPosition());
+        notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     @Override
@@ -197,7 +227,6 @@ public class AdapterDeleteUser extends RecyclerView.Adapter<AdapterDeleteUser.Vi
 
         ImageView image;
         TextView name, email;
-
         ImageButton delete;
 
         public ViewHolder(@NonNull View itemView) {
@@ -209,5 +238,3 @@ public class AdapterDeleteUser extends RecyclerView.Adapter<AdapterDeleteUser.Vi
         }
     }
 }
-
-

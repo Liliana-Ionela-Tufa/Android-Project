@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,9 +42,9 @@ import java.util.Map;
 public class EditUserProfile extends AppCompatActivity {
 
     ImageView updateImage;
-    Button update;
+    Button update, changePassword;
     TextView updateFirstName, updateLastName, updateNumber;
-    String imageURL;
+    String imageURL, Fname, Lname, phone;
     Uri uri;
     TextView textView;
     FirebaseFirestore fStore;
@@ -60,6 +62,15 @@ public class EditUserProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EditUserProfile.this, UserProfile.class);
+                startActivity(intent);
+            }
+        });
+
+        changePassword = findViewById(R.id.change_password);
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditUserProfile.this, ChangePassword.class);
                 startActivity(intent);
             }
         });
@@ -151,37 +162,62 @@ public class EditUserProfile extends AppCompatActivity {
 
     public void updateData()
     {
-        String Fname = updateFirstName.getText().toString();
-        String Lname = updateLastName.getText().toString();
-        String phone = updateNumber.getText().toString();
+        Fname = updateFirstName.getText().toString();
+        Lname = updateLastName.getText().toString();
+        phone = updateNumber.getText().toString();
         String role = "user";
-        String email = getIntent().getStringExtra("email");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = user.getEmail(); //getIntent().getStringExtra("email");
 
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         String userID = fAuth.getCurrentUser().getUid();
 
 
 
+        if(validateFields()) {
+            DocumentReference documentReference = fStore.collection("users").document(userID);
+            documentReference.update("email", email, "firstName", Fname, "lastName", Lname, "phone", phone, "role", role, "imageURL", imageURL)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(EditUserProfile.this, "Saved", Toast.LENGTH_SHORT).show();
+                            //finish();
+//                            Intent intent = new Intent(EditUserProfile.this, UserProfile.class);
+//                            startActivity(intent);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditUserProfile.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
 
-        DocumentReference documentReference = fStore.collection("users").document(userID);
-        documentReference.update("email", email,"firstName", Fname, "lastName", Lname, "phone", phone, "role", role, "imageURL", imageURL )
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(EditUserProfile.this, "Saved", Toast.LENGTH_SHORT).show();
-                        finish();
-                        Intent intent = new Intent(EditUserProfile.this, UserProfile.class);
-                        Log.d("iax", Fname);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditUserProfile.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
 
-                    }
-                });
+    }
 
+    private boolean validateFields() {
+        if (Fname.isEmpty() || Lname.isEmpty() || phone.isEmpty()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!Fname.matches("[a-zA-Z]+")) {
+            Toast.makeText(this, "First name should contain only letters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!Lname.matches("[a-zA-Z]+")) {
+            Toast.makeText(this, "Last name should contain only letters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!phone.matches("\\d{10}")) {
+            Toast.makeText(this, "Phone number should be 10 digits", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }

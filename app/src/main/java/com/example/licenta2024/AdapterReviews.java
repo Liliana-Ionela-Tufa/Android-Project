@@ -1,6 +1,7 @@
 package com.example.licenta2024;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,11 +58,15 @@ public class AdapterReviews extends RecyclerView.Adapter<AdapterReviews.ViewHold
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                     Glide.with(context).load(documentSnapshot.getString("imageURL")).into(holder.image);
-                    holder.name.setText(documentSnapshot.getString("lastName"));
+                    holder.name.setText(documentSnapshot.getString("firstName"));
                 }
             });
 
 
+        }
+        else {
+            holder.name.setText("Anonymous");
+            Glide.with(context).load(R.drawable.blankpicture);
         }
         holder.title.setText(data.getTitle());
         holder.description.setText(data.getReview());

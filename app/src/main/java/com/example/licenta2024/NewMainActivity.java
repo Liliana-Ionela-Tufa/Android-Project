@@ -40,7 +40,7 @@ public class NewMainActivity extends AppCompatActivity {
     ImageView profilePicture;
     RecyclerView recyclerView;
     ArrayList<DataClass> dataList;
-    MyAdapter myAdapter;
+    Adapter adapter;
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,7 @@ public class NewMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewMainActivity.this, UserProfile.class);
+                intent.putExtra("page", "main");
                 startActivity(intent);
             }
         });
@@ -93,8 +94,8 @@ public class NewMainActivity extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataList = new ArrayList<DataClass>();
-        myAdapter = new MyAdapter(NewMainActivity.this, dataList);
-        recyclerView.setAdapter(myAdapter);
+        adapter = new Adapter(NewMainActivity.this, dataList);
+        recyclerView.setAdapter(adapter);
 
         Event();
     }
@@ -116,7 +117,7 @@ public class NewMainActivity extends AppCompatActivity {
                                 }
                                 else break;
                             }
-                            myAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
